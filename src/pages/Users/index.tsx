@@ -13,6 +13,7 @@ import { connect, Dispatch, Loading, UserState, useModel } from 'umi';
 import UserModal from './UserModal';
 import { addRecord, editRecord } from './service';
 import { SingleUserType, FormValues } from './data.d';
+import Header from '../Header/index';
 
 interface UserPageProps {
   users: UserState;
@@ -101,12 +102,12 @@ const UserListPage: FC<UserPageProps> = ({
         per_page: users.meta.per_page,
       },
     });
-  }
+  };
 
   const addHandler = () => {
-    setModalVisible(true)
-    setRecord(undefined)
-  }
+    setModalVisible(true);
+    setRecord(undefined);
+  };
 
   const paginationHandler = (page: number, pageSize?: number) => {
     dispatch({
@@ -118,15 +119,15 @@ const UserListPage: FC<UserPageProps> = ({
     });
   };
 
-  const pageSizeHandler = (current:number,size:number) => {
+  const pageSizeHandler = (current: number, size: number) => {
     dispatch({
-      type:'user/getRemote',
-      payload:{
-        page:current,
-        per_page:size,
-      }
-    })
-  }
+      type: 'user/getRemote',
+      payload: {
+        page: current,
+        per_page: size,
+      },
+    });
+  };
 
   const onFinish = async (values: FormValues) => {
     setConfirmLoading(true);
@@ -143,8 +144,8 @@ const UserListPage: FC<UserPageProps> = ({
       serviceFun = addRecord;
     }
 
-    console.log(record,values)
-    debugger
+    console.log(record, values);
+    debugger;
 
     const result = await serviceFun({ id, values });
     if (result) {
@@ -159,52 +160,55 @@ const UserListPage: FC<UserPageProps> = ({
   };
 
   useEffect(() => {
-    resetHandler()
+    resetHandler();
   }, []);
 
   return (
-    <div className="list-table">
-      <ProTable
-        columns={columns}
-        dataSource={users.data}
-        rowKey="id"
-        loading={userListLoading}
-        search={false}
-        pagination={false}
-        options={{
-          density: true,
-          fullScreen: true,
-          reload: () => {
-            resetHandler();
-          },
-          setting: true,
-        }}
-        headerTitle="User List"
-        toolBarRender={() => [
-          <Button type="primary" onClick={addHandler}>
-            Add
-          </Button>,
-          <Button onClick={resetHandler}>Reload</Button>,
-        ]}
-      />
-      <Pagination
-        className="list-page"
-        total={users.meta.total}
-        onChange={paginationHandler}
-        onShowSizeChange={pageSizeHandler}
-        current={users.meta.page}
-        pageSize={users.meta.per_page}
-        showSizeChanger
-        showQuickJumper
-        showTotal={(total) => `Total ${total} items`}
-      />
-      <UserModal
-        visible={modalVisible}
-        closeHandler={closeHandler}
-        record={record}
-        onFinish={onFinish}
-        confirmLoading={confirmLoading}
-      ></UserModal>
+    <div>
+      <Header></Header>
+      <div className="list-table">
+        <ProTable
+          columns={columns}
+          dataSource={users.data}
+          rowKey="id"
+          loading={userListLoading}
+          search={false}
+          pagination={false}
+          options={{
+            density: true,
+            fullScreen: true,
+            reload: () => {
+              resetHandler();
+            },
+            setting: true,
+          }}
+          headerTitle="User List"
+          toolBarRender={() => [
+            <Button type="primary" onClick={addHandler}>
+              Add
+            </Button>,
+            <Button onClick={resetHandler}>Reload</Button>,
+          ]}
+        />
+        <Pagination
+          className="list-page"
+          total={users.meta.total}
+          onChange={paginationHandler}
+          onShowSizeChange={pageSizeHandler}
+          current={users.meta.page}
+          pageSize={users.meta.per_page}
+          showSizeChanger
+          showQuickJumper
+          showTotal={(total) => `Total ${total} items`}
+        />
+        <UserModal
+          visible={modalVisible}
+          closeHandler={closeHandler}
+          record={record}
+          onFinish={onFinish}
+          confirmLoading={confirmLoading}
+        ></UserModal>
+      </div>
     </div>
   );
 };

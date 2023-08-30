@@ -2,6 +2,7 @@ import { Reducer, Effect, Subscription } from 'umi';
 import { getRemoteList, editRecord, deleteRecord, addRecord } from './service';
 import { message } from 'antd';
 import { SingleUserType } from './data.d';
+
 export interface UserState {
   data: SingleUserType[];
   meta: {

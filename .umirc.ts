@@ -8,4 +8,8 @@ export default defineConfig({
   //   { path: '/', component: '@/pages/index' },
   // ],
   fastRefresh: {},
+  routes: [
+    { exact: true, path: '/', component: './Users/index' },
+    { exact: true, path: '/404', component: './Users/404' },
+  ],
 });
